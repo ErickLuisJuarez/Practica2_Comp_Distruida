@@ -1,0 +1,1 @@
+# Practica2_Comp_Distruida
