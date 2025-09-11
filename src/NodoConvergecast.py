@@ -26,7 +26,6 @@ class NodoConvergcast(Nodo):
     
     def convergecast(self,env,f):
         if self.id_nodo == 0:
-                self.val_set.update(cuadricula(self.datos_totales, len(self.vecinos) + 1)[0])  #Nodo coordinador que divide el arreglo entre 2 nodos
                 self.padre = self.id_nodo 
                 self.funcion = f
                 yield env.timeout(TICK)

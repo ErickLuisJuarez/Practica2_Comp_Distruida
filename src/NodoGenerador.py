@@ -28,6 +28,7 @@ class NodoGenerador(Nodo):
     def genera_arbol(self, env):
         if self.id_nodo == 0:
             self.padre = self.id_nodo
+            self.hijos = list(self.vecinos)
             yield env.timeout(TICK)
             self.canal_salida.envia((GO_MSG, self.id_nodo), self.vecinos)
 
