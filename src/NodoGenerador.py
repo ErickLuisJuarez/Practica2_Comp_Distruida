@@ -26,8 +26,19 @@ class NodoGenerador(Nodo):
 
     
     def genera_arbol(self, env):
-    #Tu código aquí
-        print("codigo")
+        if self.id_nodo == 0:
+            self.padre = self.id_nodo
+            yield env.timeout(TICK)
+            self.canal_salida.envia((GO_MSG, self.id_nodo), self.vecinos)
+
+        while True:
+            msg = yield self.canal_entrada.get()
+            if msg[0] == GO_MSG:
+                if self.padre is None:
+                    self.padre = msg[1]
+                    hijos = [v for v in self.vecinos if v != self.padre]
+                    self.hijos = hijos
+                    self.canal_salida.envia((GO_MSG, self.id_nodo), hijos)
         
 
 
