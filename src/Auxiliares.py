@@ -1,13 +1,32 @@
-def k_merge():
-    return []
+def k_merge(listas):
+    """
+    Recibe una lista de k listas ordenadas
+    y regresa una sola lista con todos los elementos
+
+    """
+    
+    if not listas:
+        return []    
+
+    resultado = []
+    for lista in listas:
+        resultado.extend(lista)
+    
+    resultado.sort()
+    return resultado
 
 def cuadricula(arr,cantidad_nodos):
-    #cuadricula = [[]] * cantidad_nodos NO es correcto
-    cuadricula =  [[] for _ in range(cantidad_nodos)]
-    '''Implementar'''
+    longitud = len(arr)
+    base = longitud // cantidad_nodos
+    residuo = longitud % cantidad_nodos
 
+    cuadricula = []
+    inicio = 0
+    for i in range(cantidad_nodos):
+        tamano = base +(1 if i < residuo else 0)
+        cuadricula.append(arr[inicio: inicio + tamano])
+        inicio += tamano
     return cuadricula
-
 
 
 
