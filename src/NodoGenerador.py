@@ -26,39 +26,44 @@ class NodoGenerador(Nodo):
 
     
     def genera_arbol(self, env):
-        if self.id_nodo == 0:
-            self.padre = self.id_nodo
-            self.hijos = list(self.vecinos)
-            yield env.timeout(TICK)
-            self.canal_salida.envia((GO_MSG, self.id_nodo), self.vecinos)
+        """
+        Construye un árbol generador desde el nodo 0.
+        """
+        if self.id_nodo == 0: 
+            self.padre = self.id_nodo #Se define el nodo padre 
+            self.mensajes_esperados = len(self.vecinos) #Se esperan los mensajes BACK de los vecinos
+            for vecino in self.vecinos:
+                yield env.timeout(TICK) #Simula el tiempo de envio
+                self.canal_salida.envia((GO_MSG, self.id_nodo), [vecino]) #Se envia Go a los vecinos
+        else:
+            self.padre = None #No hay nodo padre
 
-        while True:
-            msg = yield self.canal_entrada.get()
-            if msg[0] == GO_MSG:
-                if self.padre is None:
-                    self.padre = msg[1]
-                    hijos = [v for v in self.vecinos if v != self.padre]
-                    self.hijos = hijos
-                    self.canal_salida.envia((GO_MSG, self.id_nodo), hijos)
-        
+        while True: #Bucle donde se recibe mensajes
+            msg = yield self.canal_entrada.get() #Se espera recibir el mensaje
+            tipo, remitente = msg #Se ve el tipo de mensaje y remitente
 
+            if tipo == GO_MSG: #Si el tipo recibido es Go
+                if self.padre is None: #Se define el padre
+                    self.padre = remitente
+                    self.mensajes_esperados = len(self.vecinos) - 1 
 
+                    if self.mensajes_esperados == 0: 
+                        yield env.timeout(TICK) 
+                        self.canal_salida.envia((BACK_MSG, self.id_nodo), [self.padre]) #Cuando no hay vecinos, envia BACK
+                    else:
+                        for vecino in self.vecinos: #Envia GO a todos los vecinos menos al padre
+                            if vecino != self.padre:
+                                yield env.timeout(TICK)
+                                self.canal_salida.envia((GO_MSG, self.id_nodo), [vecino])
+                else: #Si el tipo de mensaje es BACK
+                    yield env.timeout(TICK) 
+                    self.canal_salida.envia((BACK_MSG, None), [remitente]) #Envia BACK vacio
 
-                    
-                    
+            elif tipo == BACK_MSG: #Si el mensaje BACK es de un hijo
+                self.mensajes_esperados -= 1 #Se reduce el contador de mesajes esperados
+                if remitente is not None:
+                    self.hijos.append(remitente) #Lo guarda en el hijo que respondio (remitente)
 
-
-
-
-
-                    
-
-
-
-
-
-
-
-                
-
-
+                if self.mensajes_esperados == 0 and self.padre != self.id_nodo: #Si ya se recibio todos los mensajes esperados
+                    yield env.timeout(TICK)
+                    self.canal_salida.envia((BACK_MSG, self.id_nodo), [self.padre]) #Envia BACK al padre

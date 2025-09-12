@@ -5,28 +5,28 @@ def k_merge(listas):
 
     """
     
-    if not listas:
+    if not listas: #Si la lista está vacía, devolvemos []
         return []    
 
-    resultado = []
+    resultado = [] 
     for lista in listas:
-        resultado.extend(lista)
+        resultado.extend(lista) #Se agrega cada sublista completa al resultado
     
-    resultado.sort()
-    return resultado
+    resultado.sort() #Se ordenan los elementos 
+    return resultado #Devuelve la lista ordenada
 
 def cuadricula(arr,cantidad_nodos):
-    longitud = len(arr)
-    base = longitud // cantidad_nodos
-    residuo = longitud % cantidad_nodos
+    longitud = len(arr) #Numero total de elementos
+    base = longitud // cantidad_nodos #Tamaño base de cada segmeneto
+    residuo = longitud % cantidad_nodos #Residuo de la division
 
-    cuadricula = []
-    inicio = 0
-    for i in range(cantidad_nodos):
-        tamano = base +(1 if i < residuo else 0)
-        cuadricula.append(arr[inicio: inicio + tamano])
-        inicio += tamano
-    return cuadricula
+    cuadricula = [] #Lista de los segmentos
+    inicio = 0 #Indice del inicio del siguiente segmento
+    for i in range(cantidad_nodos): #Iteracion sobre la cantidad de nodos
+        tamano = base +(1 if i < residuo else 0) #Algunos segmentos tiene residuos
+        cuadricula.append(arr[inicio: inicio + tamano]) #Se recorta el segmento
+        inicio += tamano #Se avanze en el indice para el proximo corte
+    return cuadricula #Devuelbve la lista de segmentos
 
 
 
