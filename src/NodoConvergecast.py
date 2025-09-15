@@ -15,8 +15,7 @@ class NodoConvergcast(Nodo):
             self.canal_entrada = canal_entrada
             self.canal_salida = canal_salida
             self.mensaje = mensaje
-            self.value =  valor #self.id_nodo #Como ejemplo diremos que los valores recolectados seran los ids , no usamos un conjunto pues no sabemos que se vaya ahacer (la funcion f)
-            #self.val_set = [self.value]
+            self.value =  valor #self.id_nodo
             self.val_set = {self.value}
             self.funcion = None 
             self.valor_final = None
@@ -33,7 +32,6 @@ class NodoConvergcast(Nodo):
         
         while True :
                 msg  = yield self.canal_entrada.get()
-                #msg = (INIT,1,set())
                 
                 if msg[0] == "INIT":
 

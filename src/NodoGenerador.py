@@ -19,10 +19,10 @@ class NodoGenerador(Nodo):
         #self.padre = None if id_nodo != 0 else id_nodo # Si es el nodo distinguido, el padre es el mismo 
         self.padre = None
         self.hijos = list()
-        self.mensajes_esperados = len(vecinos) # Cantidad de mensajes que esperamo
+        self.mensajes_esperados = len(vecinos) 
 
     def tostring(self):
-        return f"ID: {self.id_nodo}, Parent: {self.padre}, Children: {self.hijos}"
+        return f"ID: {self.id_nodo}, Padre: {self.padre}, Hijos: {self.hijos}"
 
     
     def genera_arbol(self, env):

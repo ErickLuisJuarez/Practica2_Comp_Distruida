@@ -20,7 +20,6 @@ class NodoBusqueda(Nodo):
         return f"Id_nodo = {self.id_nodo},Vecinos: {self.vecinos},array: {self.arr},estado: {self.contenido}"
 
     def busqueda(self,env,arr,elemento):
-        '''Implementar'''
 
         if self.id_nodo == 0 :
             segmento = cuadricula(arr, self.cantidad_nodos + 1) #Nodo coordinador que divide el arreglo entre 2 nodos 
@@ -58,18 +57,3 @@ class NodoBusqueda(Nodo):
             else:
                 if orden == "FOUND":
                     self.contenido = True 
-
-
-                    
-                     
-
-
-
-
-
-
-
-    
-        
-
-    
